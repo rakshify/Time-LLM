@@ -166,7 +166,8 @@ class Model(nn.Module):
         if configs.prompt_domain:
             self.description = configs.content
         else:
-            self.description = 'The Electricity Transformer Temperature (ETT) is a crucial indicator in the electric power long-term deployment.'
+            # self.description = 'The Electricity Transformer Temperature (ETT) is a crucial indicator in the electric power long-term deployment.'
+            self.description = 'The Last Traded Price (LTP) is a crucial indicator in stock market analysis and algorithmic trading strategies.'
 
         self.dropout = nn.Dropout(configs.dropout)
 
