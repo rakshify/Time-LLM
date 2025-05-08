@@ -140,14 +140,28 @@ class Dataset_ITC_hour(Dataset):
 
         self.enc_in = self.data_x.shape[-1]
         self.tot_len = len(self.data_x) - self.seq_len - self.pred_len + 1
+        
+    def normalize_trading_data(self, df: pd.DataFrame) -> pd.DataFrame:
+        ndf = pd.DataFrame()
+        ndf["date"] = df["date"]
+        dma_col = "date"
+        for col in df.columns:
+            if col not in ("date", self.target):
+                dma_col = col
+                ndf[col] = df[col].div(df[col].rolling(window=self.seq_len).mean())
+        ndf[self.target] = df[self.target]
+        return ndf[ndf[dma_col].notnull()].reset_index(drop=True)
 
     def __read_data__(self):
         self.scaler = StandardScaler()
         df_raw = pd.read_csv(os.path.join(self.root_path,
                                           self.data_path))
+        rows = df_raw.shape[0]
+        n1 = int(0.6 * rows)
+        n2 = int(0.8 * rows)
 
-        border1s = [    0,  10000 - self.seq_len,    13000 - self.seq_len]
-        border2s = [10000,  13000,                   16000]
+        border1s = [ 0,  n1 - self.seq_len,    n2 - self.seq_len]
+        border2s = [n1,                 n2,                 rows]
 
         border1 = border1s[self.set_type]
         border2 = border2s[self.set_type]
