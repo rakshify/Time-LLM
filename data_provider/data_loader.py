@@ -154,9 +154,11 @@ class Dataset_ITC_hour(Dataset):
 
     def __read_data__(self):
         self.scaler = StandardScaler()
-        df_raw = self.normalize_trading_data(
-            pd.read_csv(os.path.join(self.root_path, self.data_path))
-        )
+        # df_raw = self.normalize_trading_data(
+        #     pd.read_csv(os.path.join(self.root_path, self.data_path))
+        # )
+        df_raw = pd.read_csv(os.path.join(self.root_path,
+                                          self.data_path))
         rows = df_raw.shape[0]
         n1 = int(0.6 * rows)
         n2 = int(0.8 * rows)

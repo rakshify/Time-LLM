@@ -29,6 +29,7 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --c_out 7 \
   --des 'Exp' \
   --itr 1 \
+  --target close \
   --d_model $d_model \
   --d_ff $d_ff \
   --batch_size $batch_size \
